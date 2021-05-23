@@ -7,8 +7,8 @@ FORMAT = "%(asctime)s::%(levelname)s::%(message)s"
 
 class Logger:
     def __init__(self):
-        LOGS_FILENAME = os.path.join(os.path.dirname(Path(__file__).absolute()), 'logs/logs.txt')
-        logging.basicConfig(level='INFO', format=FORMAT, filename=LOGS_FILENAME)
+        self.LOGS_FILENAME = os.path.join(os.path.dirname(Path(__file__).absolute()), '../logs/logs.txt')
+        logging.basicConfig(level='INFO', format=FORMAT, filename=self.LOGS_FILENAME)
 
 
     def login(self, username):
@@ -25,7 +25,7 @@ class Logger:
 
     def get_logs(self):
         try:
-            with open(LOGS_FILENAME) as f:
+            with open(self.LOGS_FILENAME) as f:
                 return f.read()
         except Exception:
             return "ERROR GETTING LOGS"

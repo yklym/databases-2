@@ -33,15 +33,18 @@ class UserCUI:
             self.own_messages_stats,
             self.logout
         ]
-        while 0 < selected_key < len(options_handlers) + 1:
+        while True:
             selected_key = menu([
                 "Send message",
                 "Inbox",
                 "Statistics",
                 "Logout"
             ])
+            if len(options_handlers) < selected_key or selected_key < 0:
+                return
             clear_cls()
             options_handlers[selected_key - 1]()
+
 
     def own_messages_stats(self):
         message_states, total_count = MessageRepository.get_user_messages_stats(self.username)

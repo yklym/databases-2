@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, getrandbits
 
 from faker import Faker
 
@@ -18,7 +18,7 @@ class Seeder:
         r.flushall()
         users = [self.faker.unique.first_name() for _ in range(MOCKS_AMOUNT)]
         messages = [
-            (self.faker.sentence(nb_words=5) + ('spam' if bool(random.getrandbits(1)) else ''))
+            (self.faker.sentence(nb_words=5) + ('spam' if bool(getrandbits(1)) else ''))
             for _ in range(MOCKS_AMOUNT)
         ]
         for user in users:

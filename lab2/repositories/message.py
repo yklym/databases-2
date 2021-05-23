@@ -1,5 +1,5 @@
 from db import r
-from models.message import MessageState, messages_stats_param
+from models.message import MessageState, messages_stats_param, get_message_by_id_param
 
 class MessageRepository:
     @staticmethod
@@ -13,7 +13,7 @@ class MessageRepository:
 
     @staticmethod
     def send_message(text, username_from, username_to):
-        massage_id = get_next_message_id_save()
+        massage_id = MessageRepository.get_next_message_id_save()
         message_key = f"message:{massage_id}"
         user_key = f"user:{username_from}"
         r.sadd(f'messages-sent-to:{username_to}', massage_id)
@@ -41,9 +41,10 @@ class MessageRepository:
 
     @staticmethod
     def message_to_string(message_id):
-        message = get_message_by_id(message_id)
+        message = MessageRepository.get_message_by_id(message_id)
+        print(message)
         result = (
-                f"Id: {message['id']} " +
+                f"Id: {message['id']} \n" +
                 f"From: {message['sender-name']} to {message['receiver-name']}\n" +
                 f"Status: {message['status']}\n" +
                 f"Text: {message['text']}"
@@ -73,7 +74,7 @@ class MessageRepository:
         message_id = r.lpop('messages')
         if message_id is None:
             return None
-        return get_message_by_id(message_id)
+        return MessageRepository.get_message_by_id(message_id)
 
     @staticmethod
     def spam_message_check(message):
@@ -84,7 +85,7 @@ class MessageRepository:
         r.hincrby(sender_key, 'in-queue-amount', -1)
         r.hincrby(sender_key, 'spam-checking-amount', 1)
 
-        spam_checking_result = is_spam(message)
+        spam_checking_result = MessageRepository.is_spam(message)
         r.hincrby(sender_key, 'spam-checking-amount', -1)
         return spam_checking_result
 

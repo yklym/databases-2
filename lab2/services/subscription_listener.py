@@ -17,9 +17,9 @@ class MessagesListener(Thread):
         messages_listener = r.pubsub()
         messages_listener.subscribe(['login', 'logout', 'spam'])
 
-        try:
-            for ev in messages_listener.listen():
+        for ev in messages_listener.listen():
+            try:
                 if ev['type'] == 'message':
                     self.eventToCallback[ev['channel']]()
-        except:
-            return
+            except:
+                continue
