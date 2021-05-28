@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 class LotRepository:
     def __init__(self):
-        client = MongoClient('localhost', 27017)
+        client = MongoClient('localhost', 43000)
         db = client['LotsDB']
 
         self.db = db
